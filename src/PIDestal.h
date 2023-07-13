@@ -11,8 +11,8 @@ class PIDestal {
     PIDestal();
     PIDestal(float p, float d);
     PIDestal(float p, float i, float d);
-    PIDestal(float &p, float &d);
-    PIDestal(float &p, float &i, float &d);
+    PIDestal(float *p, float *d);
+    PIDestal(float *p, float *i, float *d);
     ~PIDestal();
 
     /*

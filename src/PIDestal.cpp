@@ -28,17 +28,17 @@ PIDestal::PIDestal(float p, float i, float d) {
     shouldDelete = true;
     useIntegral = true;
 }
-PIDestal::PIDestal(float &p, float &d) {
-    kp = &p;
-    kd = &d;
+PIDestal::PIDestal(float *p, float *d) {
+    kp = p;
+    kd = d;
 
     shouldDelete = false;
     useIntegral = false;
 }
-PIDestal::PIDestal(float &p, float &i, float &d) {
-    kp = &p;
-    ki = &i;
-    kd = &d;
+PIDestal::PIDestal(float *p, float *i, float *d) {
+    kp = p;
+    ki = i;
+    kd = d;
 
     shouldDelete = false;
     useIntegral = true;
