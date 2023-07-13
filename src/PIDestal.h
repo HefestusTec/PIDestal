@@ -8,8 +8,12 @@
 
 class PIDestal {
    public:
+    PIDestal();
+    PIDestal(float p, float d);
+    PIDestal(float p, float i, float d);
     PIDestal(float &p, float &d);
     PIDestal(float &p, float &i, float &d);
+    ~PIDestal();
 
     /*
     Recebe um erro e retorna o resultado do calculo de PID ou PD
@@ -17,9 +21,10 @@ class PIDestal {
     float calculate(float error);
 
     float *kp, *ki, *kd;
-    bool useIntegral = false;
 
    private:
+    bool useIntegral = false;
+    bool shouldDelete = false;
     double cumulativeError = 0;
     double lastError = 0;
 };
