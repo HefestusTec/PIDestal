@@ -65,9 +65,9 @@ float PIDestal::calculate(float error) {
         error = 50 / (*ki);
 
     // Calculando os valores do PID
-    double proportional = error * (*kp);
-    double integral = cumulativeError * (*ki);
-    double derivative = (error - lastError) * (*kd);
+    float proportional = error * (*kp);
+    float integral = cumulativeError * (*ki);
+    float derivative = (error - lastError) * (*kd);
 
     lastError = error;
 
