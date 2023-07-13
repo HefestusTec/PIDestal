@@ -22,13 +22,12 @@
 #define MOTOR_R_PWM_PIN 5
 
 float p = 0.5;
-float i = 0.000001;
 float d = 0.1;
 
 const float gainConstant = 3;
 
-PIDestal pidLeft(p, i, d);
-PIDestal pidRight(p, i, d);
+PIDestal pidLeft(p, d);
+PIDestal pidRight(p, d);
 
 uint16_t leftSensRead, middleSensRead, rightSensRead;
 
