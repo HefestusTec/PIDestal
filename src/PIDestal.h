@@ -25,8 +25,8 @@ class PIDestal {
    private:
     bool useIntegral = false;
     bool shouldDelete = false;
-    double cumulativeError = 0;
-    double lastError = 0;
+    float cumulativeError = 0;
+    float lastError = 0;
 };
 
 #endif
