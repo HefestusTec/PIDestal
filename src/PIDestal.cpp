@@ -61,12 +61,16 @@ float PIDestal::calculate(float error) {
         cumulativeError = 0;
 
     // Limitando a integral
-    if (cumulativeError > 50 / (*ki))
+    if (cumulativeError > 50 / (*ki) && useIntegral)
         error = 50 / (*ki);
 
     // Calculando os valores do PID
     float proportional = error * (*kp);
-    float integral = cumulativeError * (*ki);
+
+    float integral = 0.0f;
+    if (useIntegral)
+        integral = cumulativeError * (*ki);
+
     float derivative = (error - lastError) * (*kd);
 
     lastError = error;
