@@ -6,75 +6,45 @@
 #include "PIDestal.h"
 
 PIDestal::PIDestal() {
-    kp = new float(0.5);
-    kd = new float(0.1);
-
-    shouldDelete = true;
-    useIntegral = false;
+    myConsts = {0.5, 0.1, 0.1};
 }
 
-PIDestal::PIDestal(float p, float d) {
-    kp = new float(p);
-    kd = new float(d);
-
-    shouldDelete = true;
-    useIntegral = false;
-}
-PIDestal::PIDestal(float p, float i, float d) {
-    kp = new float(p);
-    ki = new float(i);
-    kd = new float(d);
-
-    shouldDelete = true;
-    useIntegral = true;
-}
-PIDestal::PIDestal(float *p, float *d) {
-    kp = p;
-    kd = d;
-
-    shouldDelete = false;
-    useIntegral = false;
-}
-PIDestal::PIDestal(float *p, float *i, float *d) {
-    kp = p;
-    ki = i;
-    kd = d;
-
-    shouldDelete = false;
-    useIntegral = true;
+PIDestal::PIDestal(PID constants) {
+    myConsts = constants;
 }
 
-PIDestal::~PIDestal() {
-    if (shouldDelete) {
-        // Limpando a memoria alocada
-        delete kp;
-        delete ki;
-        delete kd;
-    }
+PIDestal::PIDestal(float kp, float ki, float kd) {
+    myConsts = {
+        kp,
+        ki,
+        kd,
+    };
 }
 
 float PIDestal::calculate(float error) {
     cumulativeError += error;
 
-    // Resetando o erro acumulado ao alcançar o objetivo
-    if (error == 0)
-        cumulativeError = 0;
+    unsigned long now = millis();
+    float delataTime =
+        useDeltaTime ? (float)(now - lastTime) : 1;
 
-    // Limitando a integral
-    if (cumulativeError > 50 / (*ki) && useIntegral)
-        error = 50 / (*ki);
+    if (!delataTime) {
+        delataTime = 0.0001f;
+    }
 
     // Calculando os valores do PID
-    float proportional = error * (*kp);
+    float proportional = error;
 
-    float integral = 0.0f;
-    if (useIntegral)
-        integral = cumulativeError * (*ki);
+    float integral = cumulativeError * delataTime;
 
-    float derivative = (error - lastError) * (*kd);
+    float derivative = (error - lastError) / delataTime;
 
+    // Atualizando os parâmetros
     lastError = error;
+    lastTime = now;
 
-    // Resultado da computação
-    return useIntegral ? proportional + integral + derivative : proportional + derivative;
+    return (
+        (proportional * myConsts.p) +
+        (integral * myConsts.i) +
+        (derivative * myConsts.d));
 }

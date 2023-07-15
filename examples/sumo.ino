@@ -21,15 +21,13 @@
 #define MOTOR_L_PWM_PIN 4
 #define MOTOR_R_PWM_PIN 5
 
-float p = 0.5;
-float d = 0.1;
-
 const float gainConstant = 3;
 
-PIDestal pidLeft(p, d);
-PIDestal pidRight(p, d);
+PIDestal myPid(0.5f, 0.0f, 0.2f);
 
 uint16_t leftSensRead, middleSensRead, rightSensRead;
+
+float pidGain = 4.0f;
 
 void setup() {
     pinMode(SENSOR_L, INPUT);
@@ -49,8 +47,10 @@ void loop() {
     float centerError = leftSensRead - middleSensRead;
     float gain = sqrtf(middleSensRead) * gainConstant;
 
-    float leftMotor = pidLeft.calculate(centerError) * gain;
-    float rightMotor = pidLeft.calculate(-centerError) * gain;
+    float pidResult = myPid.calculate(centerError);
+
+    float leftMotor = -(pidResult * pidGain) + gain;
+    float rightMotor = (pidResult * pidGain) + gain;
 
     analogWrite(MOTOR_L_PWM_PIN, leftMotor);
     analogWrite(MOTOR_R_PWM_PIN, rightMotor);
