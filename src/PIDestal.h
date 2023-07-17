@@ -12,6 +12,11 @@ struct PID {
     float p;
     float i;
     float d;
+
+    // Define o operador != da PID struct
+    bool operator!=(const PID& other) const {
+        return (p != other.p) || (i != other.i) || (d != other.d);
+    }
 };
 
 class PIDestal {
