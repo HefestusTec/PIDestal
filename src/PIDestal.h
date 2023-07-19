@@ -40,13 +40,22 @@ class PIDestal {
     // Retorna o "useDeltaTime" variável que indica se o deltaTime deve ou não ser utilizado nas computações
     bool getUseDeltaTime() { return useDeltaTime; }
 
+    float cumulativeError = 0;
+    float maxCumulativeError = 100;
+
+    /*
+    Qual a tolerância para poder zerar o "cumulativeError"?
+
+    Zerar o erro acumulado é importante para que o mesmo não saia de controle.
+    */
+    float errorTolerance = 0;
+
    private:
     PID myConsts;
 
     // O calculo de PID deve levar o tempo em consideração?
     bool useDeltaTime = true;
 
-    float cumulativeError = 0;
     float lastError = 0;
     unsigned long lastTime = 0;
 };
